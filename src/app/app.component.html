@@ -1,25 +1,26 @@
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">9-12</th>
-            <th scope="col">12-3</th>
-            <th scope="col">3-6</th>
-            <th scope="col">6-9</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of items; let i = index">
-            <th scope="row">{{item.name}}</th>
-            <td><i class="fa fa-calendar-plus-o" (click)="openModalWithComponent()" aria-hidden="true"></i>
-            </td>
-            <td><i class="fa fa-calendar-plus-o" (click)="openModalWithComponent()" aria-hidden="true"></i>
-            </td>
-            <td><i class="fa fa-calendar-plus-o" (click)="openModalWithComponent()" aria-hidden="true"></i>
-            </td>
-            <td><i class="fa fa-calendar-plus-o" (click)="openModalWithComponent()" aria-hidden="true"></i>
-            </td>
-        </tr>
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col" *ngFor="let time of timeSlots">{{time}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items; let i = index">
+                <th scope="row">{{item.name}}</th>
 
-    </tbody>
-</table>
+                <td *ngFor="let time of timeSlots" class="hour-td available">
+                    <button class="btn-md btn-success add-btn"  (click)="openModalWithComponent()" >
+                        Add
+                    </button>
+
+                    <button class="btn-md btn-primary view-btn" >
+                        View
+                    </button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

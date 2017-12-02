@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ModalModule, BsModalService} from 'ngx-bootstrap';
-import { AppComponent, ModalContentComponent } from './app.component';
+import { AppComponent, ModalContentComponent, HighlightDirective } from './app.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ModalContentComponent
+    ModalContentComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
@@ -14,6 +15,9 @@ import { AppComponent, ModalContentComponent } from './app.component';
   ],
   providers: [
     BsModalService
+  ],
+  exports:[
+    HighlightDirective
   ],
   entryComponents:[
     ModalContentComponent
