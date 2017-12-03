@@ -3,7 +3,9 @@
         <thead>
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col" *ngFor="let time of timeSlots">{{time}}</th>
+                <th scope="col" *ngFor="let time of timeSlots">
+                    {{time.from}} to {{time.to}}
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -11,11 +13,11 @@
                 <th scope="row">{{item.name}}</th>
 
                 <td *ngFor="let time of timeSlots" class="hour-td available">
-                    <button class="btn-md btn-success add-btn"  (click)="openModalWithComponent()" >
+                    <button class="btn-md btn-success add-btn"  (click)="openModalWithComponent(time)" >
                         Add
                     </button>
 
-                    <button class="btn-md btn-primary view-btn" >
+                    <button class="btn-md btn-primary view-btn"  (click)="openModalWithComponent(time)" >
                         View
                     </button>
                 </td>

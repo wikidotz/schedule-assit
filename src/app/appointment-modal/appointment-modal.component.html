@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<h3 class="modal-title pull-left">{{title}}</h3>
+	<button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+</div>
+<div class="modal-body">
+	<form>
+		<div class="form-group">
+			<label for="client">Client</label>
+			<input type="text" class="form-control" id="client" required placeholder="Client name">
+		</div>
+
+		<div class="form-group">
+			<label for="city">City</label>
+			<ng-select [allowClear]="true" [items]="cities" (selected)="selected($event)" (removed)="removed($event)" (typed)="typed($event)"
+			 placeholder="No city selected">
+			</ng-select>
+		</div>
+
+		<div class="form-group">
+			<label for="address">Address</label>
+			<textarea placeholder="Enter complete address here" class="form-control" id="address" cols="30" rows="4"></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="address">Time</label>
+			<ng-select [allowClear]="true" [items]="timeSlotFrom" [active]="selectedTimeFrom">
+			</ng-select>
+
+			<ng-select [allowClear]="true" [items]="timeSlotTo" [active]="selectedTimeTo">
+			</ng-select>
+		</div>
+
+		{{timeSlotFrom | json}}
+
+		<button type="submit" (click)="bsModalRef.hide()" class="btn btn-success">Submit</button>
+		<button type="button" (click)="bsModalRef.hide()" class="btn btn-danger">Cancel</button>
+
+	</form>
+</div>

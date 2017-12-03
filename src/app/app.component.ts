@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, ElementRef, HostListener } from '@angular/core';
-
+import { CreateAppointmentModalComponent } from './appointment-modal/appointment-modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
@@ -35,16 +35,7 @@ export class HighlightDirective {
 })
 export class AppComponent {
 
-	cities = [
-		{ label: "Chatrapati Shivaji Terminus", value: "CST" },
-		{ label: "Churchgate", value: "CGT" },
-		{ label: "Masjid Bunder", value: "MJB" },
-		{ label: "Marine Lines", value: "MRL" },
-		{ label: "Sandhurst Road", value: "SDR" },
-		{ label: "Charni Road	", value: "CNR" },
-		{ label: "Byculla", value: "BYC" },
-		{ label: "Dockyard Road", value: "DYR" }
-	]
+	
 
 	today = new Date();
 	startTime = new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate(), 10, 0, 0, 0)
@@ -70,57 +61,34 @@ export class AppComponent {
 		}
 	];
 
-	isAvailable(person, time) {
+	randomClass() {
 		//time
-		return 'available'
+		return Math.round(Math.random() * 1) == 1 ? 'available' : 'booked';
 	}
 
 	bsModalRef: BsModalRef;
+
 	constructor(private modalService: BsModalService) {
 
-		console.log(this.startTime);
-		console.log(this.endTime);
-
-
-
 		let difference = this.endTime.getHours() - this.startTime.getHours();
-		//let t = this.startTime.getHours();
 
 		this.timeSlots = Array(difference).fill(difference).map((x, i) => {
-			var time = (this.startTime.getHours() + i) % 12;
-			let time2 = Number(time+1)
-			time = time==0 ? 12 : time;
-			return time +' to ' + time2;
+			let time = {
+				from: (this.startTime.getHours() + i) % 12,
+				to: Number((this.startTime.getHours() + i) % 12) + 1
+			}
+			return time;
 		})
 	}
 
-	openModalWithComponent() {
-		this.bsModalRef = this.modalService.show(ModalContentComponent);
+	openModalWithComponent(time) {
+		this.bsModalRef = this.modalService.show(CreateAppointmentModalComponent);
+		this.bsModalRef.content.selectedTimeFrom = time.from
+		this.bsModalRef.content.selectedTimeTo = time.to
+		this.bsModalRef.content.timeSlots = this.timeSlots
 		this.bsModalRef.content.title = 'Add New Appointment';
 
 	}
 }
 
-@Component({
-	selector: 'modal-content',
-	template: `
-    <div class="modal-header">
-      <h3 class="modal-title pull-left">{{title}}</h3>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <input class="form-control" placeholder="Client Name">
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success " (click)="bsModalRef.hide()">Confirm </button>
-      <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
-    </div>
-  `
-})
-export class ModalContentComponent {
-	title: string;
-	list: any[] = [];
-	constructor(public bsModalRef: BsModalRef) { }
-}
+
