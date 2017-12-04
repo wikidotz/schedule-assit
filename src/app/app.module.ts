@@ -32,8 +32,7 @@ const appRoutes: Routes = [
 		SelectModule,HttpModule,
 		ModalModule.forRoot(),
 		RouterModule.forRoot(
-			appRoutes,
-			{ enableTracing: true } // <-- debugging purposes only
+			appRoutes
 		)
 	],
 	providers: [
