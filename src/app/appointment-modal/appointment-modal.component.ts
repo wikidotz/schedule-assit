@@ -9,6 +9,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 	encapsulation: ViewEncapsulation.None
 })
 export class CreateAppointmentModalComponent implements OnInit {
+	appointmentCreated = false;
+	mode:boolean;
 	cities = [
 		{ text: "Chatrapati Shivaji Terminus", id: "CST" },
 		{ text: "Churchgate", id: "CGT" },
@@ -85,5 +87,12 @@ export class CreateAppointmentModalComponent implements OnInit {
 	ngOnInit() {
 
 	}
+
+	onConfirm(){
+		
+		this.appointmentCreated = true
+	}
+
+	
 
 }
