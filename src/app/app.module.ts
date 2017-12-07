@@ -8,14 +8,15 @@ import { CreateAppointmentModalComponent } from './appointment-modal/appointment
 import { LoginComponent } from './login/login.component';
 import { SelectModule } from 'ng2-select';
 import { HomeComponent } from './home/home.component';
-import { AlertService, AuthenticationService, UserService } from './services/index'
+import { AlertService, AuthenticationService, UserService, AppointmentService } from './services/index'
 import { HttpModule } from '@angular/http';
 import { RegisterComponent } from './register/register.component'
 
 const appRoutes: Routes = [
 	{ path: 'login', component: LoginComponent },
 	{ path: 'home', component: HomeComponent },
-	{ path: 'register', component: RegisterComponent }
+	{ path: 'register', component: RegisterComponent },
+	{ path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({
@@ -29,7 +30,7 @@ const appRoutes: Routes = [
 	imports: [
 		BrowserModule,
 		FormsModule,
-		SelectModule,HttpModule,
+		SelectModule, HttpModule,
 		ModalModule.forRoot(),
 		RouterModule.forRoot(
 			appRoutes
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
 		BsModalService,
 		AlertService,
 		AuthenticationService,
-		UserService
+		UserService,
+		AppointmentService
 	],
 	entryComponents: [
 		CreateAppointmentModalComponent

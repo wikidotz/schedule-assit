@@ -5,6 +5,7 @@
       </button>
 </div>
 <div class="modal-body">
+	{{appointment | json}}
 	<div *ngIf="mode=='add'">
 	<form *ngIf="!appointmentCreated">
 		<div class="form-group">
@@ -26,10 +27,10 @@
 
 		<div class="form-group">
 			<label  class="col-md-4" for="address">Time</label>
-			<ng-select class="col-md-4"  [allowClear]="true" [items]="timeSlotFrom" [active]="selectedTimeFrom">
+			<ng-select class="col-md-4"  [allowClear]="true" [items]="timeSlotFrom"  [active]="selectedTimeFrom" [(ngModel)]="appointment.from"  [ngModelOptions]="{standalone: true}">
 			</ng-select>
 
-			<ng-select  class="col-md-4" [allowClear]="true" [items]="timeSlotTo" [active]="selectedTimeTo">
+			<ng-select  class="col-md-4" [allowClear]="true" [items]="timeSlotTo" [active]="selectedTimeTo" [(ngModel)]="appointment.to" [ngModelOptions]="{standalone: true}">
 			</ng-select>
 		</div>
 

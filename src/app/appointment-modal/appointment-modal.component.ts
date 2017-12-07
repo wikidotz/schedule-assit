@@ -10,6 +10,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class CreateAppointmentModalComponent implements OnInit {
 	appointmentCreated = false;
+
+	appointment = {
+		from: '',
+		to: ''
+	}
 	mode:boolean;
 	cities = [
 		{ text: "Chatrapati Shivaji Terminus", id: "CST" },
@@ -29,17 +34,10 @@ export class CreateAppointmentModalComponent implements OnInit {
 
 	_selectecTimeFrom;
 
-	set selectedTimeFrom(value) {
-		if (value) {
-			this._selectecTimeFrom = value
-		}
-
-	}
-
 	get selectedTimeFrom() {
 		return [{
 			id: this._selectecTimeFrom,
-			text: this._selectecTimeFrom
+			text: this.timeLabel(this._selectecTimeFrom)
 		}]
 	}
 
@@ -54,8 +52,13 @@ export class CreateAppointmentModalComponent implements OnInit {
 	get selectedTimeTo() {
 		return [{
 			id: this._selectedTimeTo,
-			text: this._selectedTimeTo
+			text: this.timeLabel(this._selectedTimeTo)
 		}]
+	}
+
+	timeLabel(t){
+		let time = new Date(t);
+		return time.toLocaleString('en-US', { hour: 'numeric', hour12: true })
 	}
 
 	set timeSlots(value) {
@@ -66,11 +69,11 @@ export class CreateAppointmentModalComponent implements OnInit {
 				var element = value[index];
 				this.timeSlotFrom.push({
 					id: element.from,
-					text: element.from
+					text: this.timeLabel(element.from)
 				})
 				this.timeSlotTo.push({
 					id: element.to,
-					text: element.to
+					text: this.timeLabel(element.to)
 				})
 			}
 		}

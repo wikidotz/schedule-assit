@@ -4,4 +4,9 @@ export class User {
     password: string;
     firstName: string;
     lastName: string;
+
+    isBusy(time):boolean{
+        
+        return true;
+    }
 }

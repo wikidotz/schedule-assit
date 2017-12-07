@@ -2,29 +2,10 @@ import { Component, ViewEncapsulation, ElementRef, HostListener } from '@angular
 import { CreateAppointmentModalComponent } from '../appointment-modal/appointment-modal.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-
+import { salesPersons } from '../data/index'
+import { AppointmentService } from '../services/index'
+import { ISalesPerson } from '../interfaces/index'
 import { Directive } from '@angular/core';
-
-@Directive({
-	selector: '[appHighlight]'
-})
-export class HighlightDirective {
-	@HostListener('mouseenter') onMouseEnter() {
-		this.highlight('yellow');
-	}
-
-	@HostListener('mouseleave') onMouseLeave() {
-		this.highlight(null);
-	}
-
-	constructor(private el: ElementRef) {
-		el.nativeElement.className = 'yellow';
-	}
-
-	private highlight(color: string) {
-		this.el.nativeElement.style.backgroundColor = color;
-	}
-}
 
 
 @Component({
@@ -40,61 +21,54 @@ export class HomeComponent {
 
 	timeSlots = [];
 
-
-	items = [
-		{
-			name: 'Robert',
-			id: 0
-		},
-		{
-			name: 'Peter',
-			id: 1
-		}, {
-			name: 'Sany',
-			id: 2
-		}, {
-			name: 'John',
-			id: 3
-		}
-	];
-
-	randomClass() {
-		//time
-		return Math.round(Math.random() * 1) == 1 ? 'available' : 'booked';
-	}
-
-	getCSSClass(t){
-		if(t.from<5){
-			return 'available'
-		}else{
-			return 'booked'
-		}
-	}
+	items: ISalesPerson[];
 
 	bsModalRef: BsModalRef;
 
-	constructor(private modalService: BsModalService) {
+	_slot: number = 1;
+
+	set slot (value){
+		this._slot = value;
+	}
+
+	get slot ():number{
+		return this._slot;
+	}
+
+	constructor(private modalService: BsModalService, public appointmentService: AppointmentService) {
 
 		let difference = this.endTime.getHours() - this.startTime.getHours();
+		difference = Math.ceil(difference / this.slot);
+
+		let time1 = new Date(this.startTime.getTime());
+		let time2 = new Date(this.startTime.getTime());
 
 		this.timeSlots = Array(difference).fill(difference).map((x, i) => {
-			let time = {
-				from: (this.startTime.getHours() + i) % 12,
-				to: Number((this.startTime.getHours() + i) % 12) + 1
-			}
-			return time;
+
+			time1.setHours(time2.getHours());
+			time2.setHours(Math.min(this.endTime.getHours(), time1.getHours() + this.slot));
+
+			return {
+				from: time1.toLocaleString('en-US', { hour: 'numeric', hour12: true }),
+				fromDate: time1.getTime(),
+				to: time2.toLocaleString('en-US', { hour: 'numeric', hour12: true }),
+				toDate: time2.getTime()
+			};
+
 		})
+
+		this.items = appointmentService.getSalesPerson();
 	}
+
+	
 
 	openModalWithComponent(time, mode) {
 		this.bsModalRef = this.modalService.show(CreateAppointmentModalComponent);
-		this.bsModalRef.content.selectedTimeFrom = time.from
-		this.bsModalRef.content.selectedTimeTo = time.to
+		this.bsModalRef.content.selectedTimeFrom = time.fromDate
+		this.bsModalRef.content.selectedTimeTo = time.toDate
 		this.bsModalRef.content.timeSlots = this.timeSlots
-		this.bsModalRef.content.title = mode+' Appointment';
+		this.bsModalRef.content.title = mode + ' Appointment';
 		this.bsModalRef.content.mode = mode;
 
 	}
 }
-
-
